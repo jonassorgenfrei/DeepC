@@ -4,6 +4,8 @@
 #include "DDImage/Knobs.h"
 #include "DDImage/Row.h"
 
+#include <stdio.h>
+
 static const char *CLASS = "DeepCKeymix";
 static const char *HELP = "A Keymix node to use withing a deep stream. Mimics the 2d KeyMix node in controls and behavior.\n\n"
                           "Falk Hofmann 12/2021";
@@ -14,7 +16,6 @@ static const char *const bbox_names[] = {"union", "B\tB side", "A\tA side", null
 
 class DeepCKeymix : public DeepFilterOp
 {
-
     ChannelSet _processChannelSet;
     Channel maskChannel;
     bool invertMask;
@@ -48,7 +49,7 @@ public:
 
     const char *node_help() const override { return HELP; }
     const char *Class() const override { return CLASS; }
-    Op *op() override { return this; }
+    virtual Op *op() override { return this; }
 
     bool test_input(int input, Op *op) const
     {
@@ -56,24 +57,21 @@ public:
         {
         case 0:
         case 1:
-            return DeepFilterOp::test_input(input, op);
+            return DeepFilterOp::test_input(input, op); // Deep A and B Input
         case 2:
-            return dynamic_cast<Iop *>(op) != 0;
+            return dynamic_cast<Iop *>(op) != 0;    // Mask Input
         default:
             return DeepFilterOp::test_input(input, op);
         }
     }
 
-    const char *input_label(int n, char *) const
+    const char* input_label(int n, char *) const override
     {
         switch (n)
         {
-        case 0:
-            return "B";
-        case 1:
-            return "A";
-        case 2:
-            return "mask";
+        case 0: return "B";
+        case 1:  return "A";
+        default: return "mask";
         }
     }
 
@@ -122,7 +120,6 @@ public:
                 case ABOX:
                     _deepInfo = infoA;
                     break;
-
                 case BBOX:
                     _deepInfo = infoB;
                     break;
@@ -142,7 +139,7 @@ public:
         }
     }
 
-    void getDeepRequests(Box box, const ChannelSet &channels, int count, std::vector<RequestData> &requests)
+    void getDeepRequests(Box box, const ChannelSet &channels, int count, std::vector<RequestData> &requests) override
     {
         if (!input0())
             return;
@@ -160,13 +157,12 @@ public:
         }
     }
 
-    bool doDeepEngine(DD::Image::Box box, const ChannelSet &requestedChannels, DeepOutputPlane &plane) override
+    bool doDeepEngine(DD::Image::Box box, const ChannelSet& requestedChannels, DeepOutputPlane& plane) override
     {
 
         ChannelSet process = requestedChannels;
         process += _processChannelSet;
 
-        DeepOp *_bOp = input0();
         if (!_bOp)
             return true;
 
@@ -205,16 +201,14 @@ public:
             if (!_aOp->deepEngine(box, process, aPlane))
                 return false;
 
-            float maskVal;
-            int currentYRow;
+            float maskVal = 0.0f;     
             Row maskRow(box.x(), box.r());
 
             _maskOp->get(box.y(), box.x(), box.r(), maskChannel, maskRow);
-            currentYRow = box.y();
-
+            int currentYRow = box.y();
+    
             for (Box::iterator it = box.begin(), itEnd = box.end(); it != itEnd; ++it)
             {
-
                 if (currentYRow != it.y)
                 {
                     _maskOp->get(it.y, box.x(), box.r(), maskChannel, maskRow);
@@ -235,28 +229,23 @@ public:
                 DeepPixel aPixel = aPlane.getPixel(it);
                 DeepPixel bPixel = bPlane.getPixel(it);
 
-                size_t inPixelSamples;
-                int aSampleNo = aPixel.getSampleCount();
-                int bSampleNo = bPixel.getSampleCount();
+                size_t inPixelSamples = 0;
+                size_t aSampleNo = aPixel.getSampleCount();
+                size_t bSampleNo = bPixel.getSampleCount();
 
-                if (maskVal == 0.0f)
+                float mixing = maskVal * mix;
+
+                if (maskVal <= 0.0f || mix <= 0.0f)
                 {
                     inPixelSamples = bSampleNo;
                 }
-                else if (maskVal * mix >= 1.0f)
+                else if (mixing >= 1.0f)
                 {
                     inPixelSamples = aSampleNo;
                 }
-                else
+                else if (mix > 0.0f)
                 {
-                    if (mix > 0.0f)
-                    {
-                        inPixelSamples = bSampleNo + aSampleNo;
-                    }
-                    else
-                    {
-                        inPixelSamples = bSampleNo;
-                    }
+                    inPixelSamples = bSampleNo + aSampleNo;
                 }
 
                 outPlane.setSampleCount(it, inPixelSamples);
@@ -264,47 +253,46 @@ public:
                 DeepOutputPixel outPixel = outPlane.getPixel(it);
                 ChannelSet aInPixelChannels = bPixel.channels();
                 ChannelSet bInPixelChannels = bPixel.channels();
-
-                float mixing = maskVal * mix;
+                
                 for (size_t sampleNo = 0; sampleNo < inPixelSamples; sampleNo++)
                 {
                     foreach (z, process)
                     {
                         float &outData = outPixel.getWritableUnorderedSample(sampleNo, z);
 
-                        int cIndex = colourIndex(z);
-
-                        if ((mixing <= 0.0f))
+                        if (maskVal <= 0.0f || mix <= 0.0f)
                         {
                             outData = bPixel.getUnorderedSample(sampleNo, z);
                         }
-                        if ((mixing > 0.0f) && (mixing < 1.0f))
-                        {
-                            if ((z == Chan_DeepFront) || (z == Chan_DeepBack))
-                                continue;
-
-                            float bInData = 0.0f;
-
-                            if (sampleNo < bSampleNo)
-                            {
-                                bInData = bInPixelChannels.contains(z)
-                                              ? bPixel.getUnorderedSample(sampleNo, z)
-                                              : 0.0f;
-
-                                outData = (1.0f - mixing) * bInData;
-                            }
-                            else
-                            {
-                                const float &aInData = aInPixelChannels.contains(z)
-                                                           ? aPixel.getUnorderedSample(sampleNo - bSampleNo, z)
-                                                           : 0.0f;
-                                outData = (aInData * mixing) + bInData;
-                            }
-                        }
-                        if (mixing >= 1.0f)
+                        else if (mixing >= 1.0f)
                         {
                             outData = aPixel.getUnorderedSample(sampleNo, z);
                         }
+                        else
+                        {
+                            if ((z == Chan_DeepFront) || (z == Chan_DeepBack)) {
+                                continue;
+                            }
+
+                            if (sampleNo < bSampleNo)
+                            {   
+                                
+                                float bInData = bInPixelChannels.contains(z)
+                                              ? bPixel.getUnorderedSample(sampleNo, z)
+                                              : 0.0f;
+
+                                outData = (1.0f - mixing) * bInData; 
+                            }
+                            else
+                            {
+                                float aInData = aInPixelChannels.contains(z)
+                                                ? aPixel.getUnorderedSample(sampleNo - bSampleNo, z)
+                                                           : 0.0f;
+
+                                outData = aInData * mixing;
+                            }  
+                        }   
+
                     }
                 }
             }
