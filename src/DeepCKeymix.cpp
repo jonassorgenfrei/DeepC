@@ -162,7 +162,7 @@ public:
 
         ChannelSet process = requestedChannels;
         process += _processChannelSet;
-
+     
         if (!_bOp)
             return true;
 
@@ -251,7 +251,7 @@ public:
                 outPlane.setSampleCount(it, inPixelSamples);
 
                 DeepOutputPixel outPixel = outPlane.getPixel(it);
-                ChannelSet aInPixelChannels = bPixel.channels();
+                ChannelSet aInPixelChannels = aPixel.channels();
                 ChannelSet bInPixelChannels = bPixel.channels();
                 
                 for (size_t sampleNo = 0; sampleNo < inPixelSamples; sampleNo++)
@@ -259,7 +259,7 @@ public:
                     foreach (z, process)
                     {
                         float &outData = outPixel.getWritableUnorderedSample(sampleNo, z);
-
+                        outData = 0.0f;
                         if (maskVal <= 0.0f || mix <= 0.0f)
                         {
                             outData = bPixel.getUnorderedSample(sampleNo, z);
@@ -271,26 +271,35 @@ public:
                         else
                         {
                             if ((z == Chan_DeepFront) || (z == Chan_DeepBack)) {
-                                continue;
+                                // copy DeepFront and DeepBack data
+                                if (sampleNo < bSampleNo)
+                                {
+                                    outData = bPixel.getUnorderedSample(sampleNo, z);
+                                }
+                                else {
+                                    outData = aPixel.getUnorderedSample(sampleNo - bSampleNo, z);
+                                }
                             }
+                            else {
 
-                            if (sampleNo < bSampleNo)
-                            {   
-                                
-                                float bInData = bInPixelChannels.contains(z)
-                                              ? bPixel.getUnorderedSample(sampleNo, z)
-                                              : 0.0f;
+                                if (sampleNo < bSampleNo)
+                                {
 
-                                outData = (1.0f - mixing) * bInData; 
+                                    float bInData = bInPixelChannels.contains(z)
+                                        ? bPixel.getUnorderedSample(sampleNo, z)
+                                        : 0.0f;
+
+                                    outData = (1.0f - mixing) * bInData;
+                                }
+                                else
+                                {
+                                    float aInData = aInPixelChannels.contains(z)
+                                        ? aPixel.getUnorderedSample(sampleNo - bSampleNo, z)
+                                        : 0.0f;
+
+                                    outData = aInData * mixing;
+                                }
                             }
-                            else
-                            {
-                                float aInData = aInPixelChannels.contains(z)
-                                                ? aPixel.getUnorderedSample(sampleNo - bSampleNo, z)
-                                                           : 0.0f;
-
-                                outData = aInData * mixing;
-                            }  
                         }   
 
                     }
