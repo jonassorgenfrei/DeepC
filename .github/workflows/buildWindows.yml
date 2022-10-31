@@ -18,10 +18,14 @@ jobs:
       shell: pwsh
       run: |
           mkdir nuke-install
-          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
-          mkdir nuke
+          curl https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-win-x86_64.zip -O ./nuke.zip
+          Expand-Archive -Force ./nuke.zip ./nuke-install
+          cd nuke-install
+          ls
     - name: Install Nuke
-      run: ./nuke-install/Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=./Nuke
+      run: |
+          mkdir nuke
+          ./nuke-install/Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=./Nuke
     #- name: Install OpenGL and Glu
     #  run: | 
     #      sudo apt-get update
