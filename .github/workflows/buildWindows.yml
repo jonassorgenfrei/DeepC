@@ -1,6 +1,6 @@
-name: build-and-test-linux
+name: build-and-test-Windows
 
-run-name: "Build Linux: Push ${{ github.event.after }} by ${{ github.actor }}" 
+run-name: "Build Windows: Push ${{ github.event.after }} by ${{ github.actor }}" 
 on: [push]
 
 jobs:
@@ -9,22 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nuke-version: ["12.0v8", "12.1v5", "12.2v11", "13.0v10", "13.1v5", "13.2v4"]
+        nuke-version: ["13.2v4"]
+        #nuke-version: ["12.0v8", "12.1v5", "12.2v11", "13.0v10", "13.1v5", "13.2v4"]
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
-    - name: Install Nuke
+    - name: Download Nuke
       run: |
           mkdir nuke-install
           wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
           mkdir nuke
-          echo "Installing Nuke"
-          sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
-    #     windows: Nuke<version>-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=E:\Nuke
+    - name: Install Nuke
+          ./nuke-install/Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=./Nuke
     - name: Install OpenGL and Glu
-      run: | 
-          sudo apt-get update
-          sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
+      #run: | 
+      #    sudo apt-get update
+      #    sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
@@ -35,9 +35,10 @@ jobs:
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
-      run:  zip -r DeepC-Linux-Nuke${{ matrix.nuke-version }}.zip ./install
+      shell: pwsh
+      run:  Compress-Archive -LiteralPath "./install" -DestinationPath "./DeepC-Windows-Nuke${{ matrix.nuke-version }}.zip" -Force
     - name: Upload Deep artifact
       uses: actions/upload-artifact@v2.2.4
       with:
-        name: DeepC-Linux-Nuke${{ matrix.nuke-version }}
+        name: DeepC-Windows-Nuke${{ matrix.nuke-version }}
         path: "DeepC-*.zip"
