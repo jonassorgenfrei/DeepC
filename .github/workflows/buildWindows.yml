@@ -18,8 +18,8 @@ jobs:
       shell: pwsh
       run: |
           mkdir nuke-install
-          curl https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-win-x86_64.zip -O ./nuke.zip
-          Expand-Archive -Force ./nuke.zip ./nuke-install
+          curl https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-win-x86_64.zip -O nuke.zip
+          Expand-Archive -Force nuke.zip nuke-install
           cd nuke-install
           ls
     - name: Install Nuke
