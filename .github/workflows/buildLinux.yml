@@ -31,7 +31,7 @@ jobs:
       run: | 
           mkdir build
           mkdir install
-          cmake -S . -DCMAKE_INSTALL_PREFIX="install" -DNuke_ROOT="./nuke/Nuke${{ matrix.nuke-version }}" -B "build"
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="./nuke/Nuke${{ matrix.nuke-version }}" -B "build"
           cmake --build "build" --config Release
           cmake --install "install"
     - name: Check Install
