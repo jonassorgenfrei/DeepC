@@ -21,10 +21,10 @@ jobs:
           mkdir nuke
     - name: Install Nuke
       run: ./nuke-install/Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=./Nuke
-    - name: Install OpenGL and Glu
-      #run: | 
-      #    sudo apt-get update
-      #    sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
+    #- name: Install OpenGL and Glu
+    #  run: | 
+    #      sudo apt-get update
+    #      sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
