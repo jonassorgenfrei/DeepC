@@ -34,7 +34,10 @@ jobs:
           cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="./nuke/Nuke${{ matrix.nuke-version }}" -B "build"
           cmake --build "build" --config Release
           cmake --install "build"
-    - name: Check Install
-      run: | 
-          cd install
-          ls -a
+    - name: Compress files
+      run:  zip -r DeepC-Linux-Nuke${{ matrix.nuke-version }}.zip ./install
+    - name: Upload Deep artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: DeepC-Linux-Nuke${{ matrix.nuke-version }}
+        path: "DeepC-*.zip"
