@@ -33,7 +33,7 @@ jobs:
           mkdir install
           cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="./nuke/Nuke${{ matrix.nuke-version }}" -B "build"
           cmake --build "build" --config Release
-          cmake --install "install"
+          cmake --install "build"
     - name: Check Install
       run: | 
           cd install
