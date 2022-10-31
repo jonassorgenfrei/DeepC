@@ -18,6 +18,7 @@ jobs:
           mkdir nuke-install
           wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
           mkdir nuke
+          echo "Installing Nuke"
           sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke'
     #     windows: Nuke<version>-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=E:\Nuke
     - name: Check Nuke
