@@ -25,11 +25,8 @@ jobs:
     - name: Install Nuke
       run: |
           cd nuke
+          dir
           Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
-    #- name: Install OpenGL and Glu
-    #  run: | 
-    #      sudo apt-get update
-    #      sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
