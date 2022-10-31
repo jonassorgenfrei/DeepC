@@ -21,8 +21,8 @@ endif()
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(FASTNOISE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/FastNoise)
-add_library(FastNoise OBJECT ${FASTNOISE_DIR}/FastNoise.cpp)
+#set(FASTNOISE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/FastNoise)
+#add_library(FastNoise OBJECT ${FASTNOISE_DIR}/FastNoise.cpp)
 
 # add sub directory
 #add_subdirectory(src)
