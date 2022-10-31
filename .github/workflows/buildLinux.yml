@@ -1,0 +1,21 @@
+name: build-and-test-linux
+
+run-name: "Test Linux: Push ${{ github.event.after }} by ${{ github.actor }}" 
+on: [push]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nuke-version: ["13.2v4"]
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v2
+    - name: Install Nuke
+      run: | 
+          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz
+          ls
+    - name: Get cmake
+      uses: lukka/get-cmake@latest

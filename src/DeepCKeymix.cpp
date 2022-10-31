@@ -162,7 +162,8 @@ public:
 
         ChannelSet process = requestedChannels;
         process += _processChannelSet;
-     
+        //for (auto p : process)
+        //    std::cout << p << std::endl;
         if (!_bOp)
             return true;
 
