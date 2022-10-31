@@ -3,8 +3,8 @@ project(DeepC)
 
 cmake_policy(SET CMP0074 NEW)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(Nuke REQUIRED)
+#set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+#find_package(Nuke REQUIRED)
 
 message("Using Nuke ${NUKE_VERSION_MAJOR}.${NUKE_VERSION_MINOR}v${NUKE_VERSION_RELEASE}")
 
@@ -25,12 +25,12 @@ set(FASTNOISE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/FastNoise)
 add_library(FastNoise OBJECT ${FASTNOISE_DIR}/FastNoise.cpp)
 
 # add sub directory
-add_subdirectory(src)
+#add_subdirectory(src)
 
 # install directory
-install(FILES
-    python/init.py
-    DESTINATION .)
+#install(FILES
+#    python/init.py
+#    DESTINATION .)
 
-file(GLOB ICONS "icons/DeepC*.png")
-install(FILES ${ICONS} DESTINATION icons)
+#file(GLOB ICONS "icons/DeepC*.png")
+#install(FILES ${ICONS} DESTINATION icons)

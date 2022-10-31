@@ -13,14 +13,15 @@ jobs:
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
-    - name: Install Nuke
-      run: |
-          mkdir nuke-install
-          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
-          mkdir nuke
-          echo "Installing Nuke"
-          sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
+    #- name: Install Nuke
+    #  run: |
+    #      mkdir nuke-install
+    #      wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
+    #      mkdir nuke
+    #      echo "Installing Nuke"
+    #      sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
     #     windows: Nuke<version>-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=E:\Nuke
+    - uses: openrndr/setup-opengl@v1.1
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
