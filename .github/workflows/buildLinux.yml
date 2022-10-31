@@ -15,7 +15,12 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Nuke
       run: | 
-          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz
-          ls
+          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz ./nuke-install
+          sudo ./Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
+
     - name: Get cmake
       uses: lukka/get-cmake@latest
+    - name: Check Nuke 
+      run: | 
+          cd /nuke
+          ls
