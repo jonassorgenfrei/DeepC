@@ -19,9 +19,18 @@ jobs:
           wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
           mkdir nuke
           sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
+    #     windows: Nuke<version>-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=E:\Nuke
     - name: Get cmake
       uses: lukka/get-cmake@latest
-    - name: Check Nuke 
+    - name: Build DeepC for Nuke 
       run: | 
-          cd /nuke
-          ls
+          mkdir build/${{ matrix.nuke-version }}
+          mkdir install
+          cmake -S . -D CMAKE_INSTALL_PREFIX="install/${{ matrix.nuke-version }}" -D Nuke_ROOT="./nuke/${{ matrix.nuke-version }}" -B "build/${{ matrix.nuke-version }}"
+          cmake --build "build/${{ matrix.nuke-version }}" --config Release
+          cmake --install "install/${{ matrix.nuke-version }}"
+    - name: Check Install
+      run: | 
+          cd install
+          cd ${{ matrix.nuke-version }}
+          ls -a
