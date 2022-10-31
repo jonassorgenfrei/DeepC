@@ -6,7 +6,7 @@ on: [push]
 jobs:
   build:
     name: Build DeepC Plugin for Nuke
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         nuke-version: ["13.2v4"]
@@ -20,7 +20,7 @@ jobs:
           wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
           mkdir nuke
     - name: Install Nuke
-          ./nuke-install/Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=./Nuke
+      run: ./nuke-install/Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=./Nuke
     - name: Install OpenGL and Glu
       #run: | 
       #    sudo apt-get update
