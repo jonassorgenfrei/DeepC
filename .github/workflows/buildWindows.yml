@@ -25,7 +25,7 @@ jobs:
     - name: Install Nuke
       run: |
           cd nuke
-          Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
+          Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
     #- name: Install OpenGL and Glu
     #  run: | 
     #      sudo apt-get update
