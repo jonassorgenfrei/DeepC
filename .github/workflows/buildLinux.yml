@@ -21,8 +21,12 @@ jobs:
     #      echo "Installing Nuke"
     #      sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
     #     windows: Nuke<version>-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=E:\Nuke
+    #- name: Install GL
+    #  uses: openrndr/setup-opengl@v1.1
     - name: Install GL
-      uses: openrndr/setup-opengl@v1.1
+      run: | 
+          sudo apt-get update
+          sudo apt-get install build-essential libgl1-mesa-dev
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
