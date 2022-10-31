@@ -24,7 +24,6 @@ jobs:
           Expand-Archive -Force nuke.zip nuke
     - name: Install Nuke
       run: |
-          
           cd nuke
           Nuke${{ matrix.nuke-version }}-win-x86_64 /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
     #- name: Install OpenGL and Glu
