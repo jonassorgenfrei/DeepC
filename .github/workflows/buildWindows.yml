@@ -27,7 +27,7 @@ jobs:
       run: |
           cd nuke
           mkdir Nuke${{ matrix.nuke-version }}
-          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }} -RunAsAdmin
+          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ github.workspace }}\nuke -RunAsAdmin
           cd ${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }}
           dir
     - name: Get cmake
