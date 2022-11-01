@@ -26,8 +26,9 @@ jobs:
     - name: Install Nuke
       run: |
           cd nuke
-          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ github.workspace }}\nuke
-          cd ${{ github.workspace }}\nuke
+          mkdir Nuke${{ matrix.nuke-version }}
+          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }} -RunAsAdmin
+          cd ${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }}
           dir
     - name: Get cmake
       uses: lukka/get-cmake@latest
