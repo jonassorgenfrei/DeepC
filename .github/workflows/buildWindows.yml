@@ -32,20 +32,20 @@ jobs:
       run: |
           cd ${{ github.workspace }}
           tree /f /a
-    #- name: Get cmake
-    #  uses: lukka/get-cmake@latest
-    #- name: Build DeepC for Nuke 
-    #  run: | 
-    #      mkdir build
-    #      mkdir install
-    #      cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
-    #      cmake --build "build" --config Release
-    #      cmake --install "build"
-    #- name: Compress files
-    #  shell: pwsh
-    #  run:  Compress-Archive -LiteralPath "./install" -DestinationPath "./DeepC-Windows-Nuke${{ matrix.nuke-version }}.zip" -Force
-    #- name: Upload Deep artifact
-    #  uses: actions/upload-artifact@v2.2.4
-    #  with:
-    #    name: DeepC-Windows-Nuke${{ matrix.nuke-version }}
-    #    path: "DeepC-*.zip"
+    - name: Get cmake
+      uses: lukka/get-cmake@latest
+    - name: Build DeepC for Nuke 
+      run: | 
+          mkdir build
+          mkdir install
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
+          cmake --build "build" --config Release
+          cmake --install "build"
+    - name: Compress files
+      shell: pwsh
+      run:  Compress-Archive -LiteralPath "./install" -DestinationPath "./DeepC-Windows-Nuke${{ matrix.nuke-version }}.zip" -Force
+    - name: Upload Deep artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: DeepC-Windows-Nuke${{ matrix.nuke-version }}
+        path: "DeepC-*.zip"
