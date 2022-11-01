@@ -41,8 +41,7 @@ jobs:
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
-      shell: pwsh
-      run:  Compress-Archive -LiteralPath "./install" -DestinationPath "./DeepC-Windows-Nuke${{ matrix.nuke-version }}.zip" -Force
+      run:  7z a "./DeepC-Windows-Nuke${{ matrix.nuke-version }}.zip" ./install/*
     - name: Upload Deep artifact
       uses: actions/upload-artifact@v2.2.4
       with:
