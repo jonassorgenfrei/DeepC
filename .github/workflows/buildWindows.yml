@@ -26,7 +26,7 @@ jobs:
       run: |
           cd nuke
           dir
-          Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
+          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
