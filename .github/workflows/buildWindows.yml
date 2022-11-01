@@ -9,8 +9,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        nuke-version: ["13.2v4"]
-        #nuke-version: ["12.0v8", "12.1v5", "12.2v11", "13.0v10", "13.1v5", "13.2v4"]
+        nuke-version: ["12.2v11", "13.0v10", "13.1v5", "13.2v4"]
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
