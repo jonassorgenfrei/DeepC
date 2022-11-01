@@ -16,6 +16,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Download Nuke
       run: |
+          echo ${{ github.workspace }}
           curl https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-win-x86_64.zip --output nuke.zip
     - name: Unzip Nuke
       shell: pwsh
@@ -26,8 +27,8 @@ jobs:
       run: |
           cd nuke
           dir
-          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${GITHUB_WORKSPACE}/nuke
-          cd ${GITHUB_WORKSPACE}/nuke
+          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ github.workspace }}/nuke
+          cd ${{ github.workspace }}/nuke
           dir
     - name: Get cmake
       uses: lukka/get-cmake@latest
@@ -35,7 +36,7 @@ jobs:
       run: | 
           mkdir build
           mkdir install
-          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${GITHUB_WORKSPACE}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
