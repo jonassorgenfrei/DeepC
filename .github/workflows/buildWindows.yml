@@ -27,13 +27,15 @@ jobs:
           cd nuke
           dir
           .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
+          cd ${{ env.working-directory }}/nuke
+          dir
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
       run: | 
           mkdir build
           mkdir install
-          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="./nuke/Nuke${{ matrix.nuke-version }}" -B "build"
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ env.working-directory }}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
