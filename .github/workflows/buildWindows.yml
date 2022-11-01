@@ -28,6 +28,8 @@ jobs:
           cd nuke
           mkdir Nuke${{ matrix.nuke-version }}
           .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }}
+    - name: Check Nuke Install
+      run: |
           cd ${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }}
           tree /f /a
     #- name: Get cmake
