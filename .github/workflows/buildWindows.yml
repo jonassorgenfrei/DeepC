@@ -26,8 +26,8 @@ jobs:
       run: |
           cd nuke
           dir
-          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${{ env.working-directory }}/nuke
-          cd ${{ env.working-directory }}/nuke
+          .\Nuke${{ matrix.nuke-version }}-win-x86_64.exe /S /ACCEPT-FOUNDRY-EULA /D=${GITHUB_WORKSPACE}/nuke
+          cd ${GITHUB_WORKSPACE}/nuke
           dir
     - name: Get cmake
       uses: lukka/get-cmake@latest
@@ -35,7 +35,7 @@ jobs:
       run: | 
           mkdir build
           mkdir install
-          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ env.working-directory }}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${GITHUB_WORKSPACE}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
