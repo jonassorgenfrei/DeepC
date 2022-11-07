@@ -16,11 +16,14 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Nuke
       run: |
-          mkdir nuke-install
-          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-linux-x86_64.tgz -O - | tar -xz -C ./nuke-install
           mkdir nuke
+          wget -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -O - 
+          hdiutil attach Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
+          pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
           echo "Installing Nuke"
-          sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
+          cp -R Nuke${{ matrix.nuke-version } ${{ github.workspace }}/nuke/
+          popd
+          hdiutil detach /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
     #- name: Install OpenGL and Glu
     #  run: | 
     #      sudo apt-get update
