@@ -36,7 +36,7 @@ jobs:
       run: | 
           mkdir build
           mkdir install
-          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}" -B "build"
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}/Nuke<VERSION>.app/Contents/MacOS" -B "build"
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
