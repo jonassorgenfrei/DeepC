@@ -9,8 +9,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        nuke-version: ["12.2v11"]
-        #nuke-version: ["12.2v11", "13.0v10", "13.1v5", "13.2v4"]
+        nuke-version: ["12.2v11", "13.0v10", "13.1v5", "13.2v4"]
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
@@ -26,10 +25,6 @@ jobs:
           cp -R Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
           popd
           ls ${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}.app/Contents/MacOS
-    #- name: Install OpenGL and Glu
-    #  run: | 
-    #      sudo apt-get update
-    #      sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
@@ -40,9 +35,9 @@ jobs:
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
-      run:  zip -r DeepC-Linux-Nuke${{ matrix.nuke-version }}.zip ./install
+      run:  zip -r DeepC-MacOS-Nuke${{ matrix.nuke-version }}.zip ./install
     - name: Upload Deep artifact
       uses: actions/upload-artifact@v2.2.4
       with:
-        name: DeepC-Linux-Nuke${{ matrix.nuke-version }}
+        name: DeepC-MacOS-Nuke${{ matrix.nuke-version }}
         path: "DeepC-*.zip"
