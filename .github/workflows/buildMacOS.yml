@@ -19,14 +19,8 @@ jobs:
           mkdir nuke
           curl  https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -o Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
           echo "Installing Nuke"
-          yes qy | hdiutil attach Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
-          echo "Mounting Nuke dmg"
-          pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
-          echo "Copying Nuke dmg"
-          cp -R /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64/Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
-          popd
-          echo "Detach Nuke dmg"
-          hdiutil detach /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
+          7z x Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
+          ls
     #- name: Install OpenGL and Glu
     #  run: | 
     #      sudo apt-get update
