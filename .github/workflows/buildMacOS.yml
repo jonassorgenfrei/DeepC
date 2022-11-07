@@ -25,7 +25,7 @@ jobs:
           echo "Copying Nuke"
           cp -R Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
           popd
-          ls ${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}
+          ls ${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}.app/Contents/MacOS
     #- name: Install OpenGL and Glu
     #  run: | 
     #      sudo apt-get update
@@ -36,7 +36,7 @@ jobs:
       run: | 
           mkdir build
           mkdir install
-          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}/Nuke<VERSION>.app/Contents/MacOS" -B "build"
+          cmake -S . -DCMAKE_INSTALL_PREFIX="./install" -DNuke_ROOT="${{ github.workspace }}/nuke/Nuke${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}.app/Contents/MacOS" -B "build"
           cmake --build "build" --config Release
           cmake --install "build"
     - name: Compress files
