@@ -17,7 +17,7 @@ jobs:
     - name: Install Nuke
       run: |
           mkdir nuke
-          curl -c https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg --output Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
+          curl  https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -o Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
           hdiutil attach Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
           pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
           echo "Installing Nuke"
