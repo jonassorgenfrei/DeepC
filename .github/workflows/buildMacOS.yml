@@ -19,12 +19,12 @@ jobs:
           mkdir nuke
           curl  https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -o Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
           echo "Installing Nuke"
-          hdiutil convert Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -format UDTO -o bar.cdr
-          hdiutil attach bar.cdr
+          hdiutil convert Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -format UDTO -o temp.cdr
+          hdiutil attach temp.cdr
           pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
-          cp -R /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64/Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
+          echo "Copying Nuke"
+          cp -R Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
           popd
-          hdiutil detach /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
           ls ${{ github.workspace }}/nuke/
     #- name: Install OpenGL and Glu
     #  run: | 
