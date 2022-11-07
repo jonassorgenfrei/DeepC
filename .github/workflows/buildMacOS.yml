@@ -21,14 +21,11 @@ jobs:
           echo "Installing Nuke"
           hdiutil convert Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -format UDTO -o bar.cdr
           hdiutil attach bar.cdr
-          #yes | PAGER=cat hdiutil attach Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
-          echo "Mounting Nuke dmg"
-          #pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
-          echo "Copying Nuke dmg"
-          #cp -R /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64/Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
-          #popd
-          #echo "Detach Nuke dmg"
-          #hdiutil detach /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
+          pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
+          cp -R /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64/Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
+          popd
+          hdiutil detach /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
+          ls ${{ github.workspace }}/nuke/
     #- name: Install OpenGL and Glu
     #  run: | 
     #      sudo apt-get update
