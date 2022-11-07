@@ -62,15 +62,17 @@ DeepCGrade works just like the regular Grade node. You can mask it with rotos fr
 
 ### Endlessly Extensible
 
-The power of DeepC is limited only by the power of the NDK. Upcoming features like DeepCAddChannels and DeepCShuffle are only possible using the NDK.
+The power of DeepC is limited only by the power of the NDK. Features like DeepCAddChannels and DeepCShuffle are only possible using the NDK.
 
 ### Speed
 
-Now that basic functionality is implemented, the focus will be on accelerating the speed of the toolset using the new NDK funcitonality available in Nuke 11.3.
+Now that basic functionality is implemented, the focus will be on accelerating the speed of the toolset.
 
 ## Get Them!
 
-[Check the releases page for this repo](https://github.com/charlesangus/DeepC/releases) to get the compiled versions of the plugins. Currently, I've only compiled them for Linux, but that's presumably the most useful for folks, anyway. Windows versions as and when I can, if I can. If you'd like to compile for Mac and contribute back, that would be much appreciated, as I don't have a Mac for development.
+[Check the releases page for this repo](https://github.com/charlesangus/DeepC/releases) to get the compiled versions of the plugins. You can find builds for Windows, Linux and Mac. 
+Currently the Mac build is not tested by us. If you face any issues please create a github issue provided as much information as possible for us to fix the problem.
+For information about installing Nuke Plugins please refer to  [NDK Building & Installing Plug-ins](https://learn.foundry.com/nuke/developers/13.2/ndkdevguide/intro/pluginbuildinginstallation.html)
 
 ## Future Plans
 
@@ -82,18 +84,23 @@ Much like how samples can be compressed in the renderer by merging samples close
 
 ## Build
 
-Build has been tested on ~Centos 7 with devtoolset-3 (not Centos 6 with devtoolset-2, as recommended by Foundry - presumably very few people are still using Centos 6 in production, and it seems to work fine).~ I *think* the most recent build I did was using Centos 7 and devtoolset-7, but I don't have that VM around anymore so I'm not 100%. Let me know how it goes...
-
 Thanks to Nathan Rusch (https://github.com/nrusch?tab=repositories) for contributing the CMake build setup which will form the basis for building DeepC going forward.
 
 ### Linux
 
-Install prerequisites:
+To build compile DeepC you need the gcc (6) compiler and OpenGL/GLU libs installed. 
+
+(On Cent OS/Redhat) Install prerequisites:
 
 ```bash
 sudo yum install centos-release-scl
-sudo yum install devtoolset-3
+sudo yum install devtoolset-6
 sudo yum install mesa-libGLU-devel
+```
+
+(On Ubuntu) Install prerequisites: 
+```
+apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
 ```
 
 Clone:
@@ -102,11 +109,11 @@ Clone:
 git clone --recurse-submodules https://github.com/charlesangus/DeepC
 ```
 
-Add to .bashrc on dev machine, or run before each build:
+(On Cent OS/Redhat) Add to .bashrc on dev machine, or run before each build:
 
 ```bash
-# enable devtoolset-3
-source /opt/rh/devtoolset-3/enable
+# enable devtoolset-6
+source /opt/rh/devtoolset-6/enable
 ```
 
 Then, from the DeepC dir:
@@ -156,13 +163,25 @@ cmake --install build
 ```
 ### Mac
 
-Unlikely...
+We provide binaries for MacOS build on macOS 11.7.1 using the AppleClang 13.0 compiler.
+Unfortunatly we couldn't test the binaries as we used a build server to create them.
+If you face any issues please let us know in the comments.
+
+e.g.
+```
+mkdir build
+cd build
+cmake .. -D CMAKE_INSTALL_PREFIX=install -D Nuke_ROOT="/Applications/Nuke13.1v1/Nuke13.1v1.app/Contents/MacOS" -B build
+cmake --build build --config Release
+cmake --install build
+```
 
 ## Batch Install
 We provide an install batch script to compile DeepC for multiple versions of Nuke which works on linux and windows and 
 creates the compiled plugins in the choosen install folder for every version. 
-The script can be executed running batchInstall.sh, you can then enter the Path to search for Nuke Versions e.g. /usr/local/ or C:/Program Files
+The script can be executed running batchInstall.sh, you can then enter the path to search for Nuke Versions e.g. /usr/local/ or C:/Program Files
 Optionally an install path can be entered aswell. The script then runs and compiles the plugins (as far as the dependencies like compilers can be found).
+Note: this is not tested on macOS yet.
 
 ## Examples
 We created a repository which includes some example deep render scenes to try/test/use this plugin.<br>
@@ -171,7 +190,7 @@ https://github.com/charlesangus/DeepCExamples
 
 ## Contributing
 
-Currently, DeepC is maintained by [me](https://github.com/charlesangus) and [Falk Hofmann](https://github.com/falkhofmann). I'd love your contributions, though!
+Currently, DeepC is maintained by [me](https://github.com/charlesangus), [Jonas Sorgenfrei](https://github.com/jonassorgenfrei) and [Falk Hofmann](https://github.com/falkhofmann). I'd love your contributions, though!
 
 If you'd like to contribute, please fork the project make a new feature branch for your contribution. Ideally, also let me know what you're up to so we don't duplicate efforts!
 
