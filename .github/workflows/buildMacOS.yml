@@ -18,7 +18,7 @@ jobs:
       run: |
           mkdir nuke
           curl  https://thefoundry.s3.amazonaws.com/products/nuke/releases/${{ matrix.nuke-version }}/Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg -o Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
-          hdiutil attach Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
+          hdiutil attach -force -quiet Nuke${{ matrix.nuke-version }}-mac-x86_64.dmg
           pushd /Volumes/Nuke${{ matrix.nuke-version }}-mac-x86_64
           echo "Installing Nuke"
           cp -R Nuke${{ matrix.nuke-version }} ${{ github.workspace }}/nuke/
