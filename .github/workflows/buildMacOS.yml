@@ -1,15 +1,16 @@
-name: build-and-test-linux
+name: build-and-test-MacOS
 
-run-name: "Build Linux: Push ${{ github.event.after }} by ${{ github.actor }}" 
+run-name: "Build MacOS: Push ${{ github.event.after }} by ${{ github.actor }}" 
 on: [push]
 
 jobs:
   build:
     name: Build DeepC Plugin for Nuke
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
-        nuke-version: ["12.2v11", "13.0v10", "13.1v5", "13.2v4"]
+        nuke-version: ["12.2v11"]
+        #nuke-version: ["12.2v11", "13.0v10", "13.1v5", "13.2v4"]
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
@@ -20,10 +21,10 @@ jobs:
           mkdir nuke
           echo "Installing Nuke"
           sudo ./nuke-install/Nuke${{ matrix.nuke-version }}-linux-x86_64.run --accept-foundry-eula --prefix=./nuke
-    - name: Install OpenGL and Glu
-      run: | 
-          sudo apt-get update
-          sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
+    #- name: Install OpenGL and Glu
+    #  run: | 
+    #      sudo apt-get update
+    #      sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 

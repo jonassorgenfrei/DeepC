@@ -27,10 +27,6 @@ jobs:
           cd nuke
           mkdir Nuke${{ matrix.nuke-version }}
           7z x Nuke${{ matrix.nuke-version }}-win-x86_64.exe -o${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }}
-    - name: Check Nuke Install
-      run: |
-          cd ${{ github.workspace }}
-          tree /f /a
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
