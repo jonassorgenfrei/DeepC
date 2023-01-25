@@ -27,6 +27,7 @@ jobs:
           cd nuke
           mkdir Nuke${{ matrix.nuke-version }}
           7z x Nuke${{ matrix.nuke-version }}-win-x86_64.exe -o${{ github.workspace }}\nuke\Nuke${{ matrix.nuke-version }}
+          # start /wait msiexec.exe /i Nuke14.0v1-win-x86_64.msi ACCEPT_FOUNDRY_EULA=ACCEPT /passive /quiet /l log.txt
     - name: Get cmake
       uses: lukka/get-cmake@latest
     - name: Build DeepC for Nuke 
