@@ -171,7 +171,7 @@ e.g.
 ```
 mkdir build
 cd build
-cmake .. -D CMAKE_INSTALL_PREFIX=install -D Nuke_ROOT="/Applications/Nuke13.1v1/Nuke13.1v1.app/Contents/MacOS" -B build
+cmake .. -D CMAKE_INSTALL_PREFIX=install -D Nuke_ROOT="/Applications/Nuke14.1v1/Nuke14.1v1.app/Contents/MacOS" -B build
 cmake --build build --config Release
 cmake --install build
 ```
@@ -195,6 +195,7 @@ Currently, DeepC is maintained by [me](https://github.com/charlesangus), [Jonas 
 If you'd like to contribute, please fork the project make a new feature branch for your contribution. Ideally, also let me know what you're up to so we don't duplicate efforts!
 
 Once you're happy with your work, submit a pull request so I can merge your work back in.
+
 
 ### Conventions
 
