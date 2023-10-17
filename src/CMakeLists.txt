@@ -54,6 +54,9 @@ function(add_nuke_plugin PLUGIN_NAME)
     set_target_properties(${PLUGIN_NAME} PROPERTIES PREFIX "")
     if (APPLE)
         set_target_properties(${PLUGIN_NAME} PROPERTIES SUFFIX ".dylib")
+    elseif(WIN32)
+        target_compile_definitions(${PLUGIN_NAME} PUBLIC NOMINMAX)
+        target_compile_definitions(${PLUGIN_NAME} PUBLIC _USE_MATH_DEFINES)
     endif()
 endfunction()
 
@@ -65,11 +68,16 @@ include_directories(${NUKE_INCLUDE_DIRS})
 # DeepCMWrapper
 add_library(DeepCWrapper OBJECT DeepCWrapper.cpp)
 target_link_libraries(DeepCWrapper PRIVATE ${NUKE_DDIMAGE_LIBRARY})
+target_compile_definitions(DeepCWrapper PUBLIC NOMINMAX)
+target_compile_definitions(DeepCWrapper PUBLIC _USE_MATH_DEFINES)
+
 
 # DeepCMWrapper
 add_library(DeepCMWrapper OBJECT DeepCMWrapper.cpp)
 target_link_libraries(DeepCMWrapper PRIVATE ${NUKE_DDIMAGE_LIBRARY})
 target_sources(DeepCMWrapper PRIVATE $<TARGET_OBJECTS:DeepCWrapper>)
+target_compile_definitions(DeepCMWrapper PUBLIC NOMINMAX)
+target_compile_definitions(DeepCMWrapper PUBLIC _USE_MATH_DEFINES)
 
 # add configuration 
 foreach(PLUGIN_NAME ${PLUGINS})

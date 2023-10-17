@@ -12,7 +12,7 @@ jobs:
         nuke-version: ["12.2v11", "13.0v10", "13.1v5", "13.2v8", "14.0v6", "14.1v1"]
     steps:
     - name: Checkout branch
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Install Nuke
       run: |
           mkdir nuke
@@ -37,7 +37,7 @@ jobs:
     - name: Compress files
       run:  zip -r DeepC-MacOS-Nuke${{ matrix.nuke-version }}.zip ./install
     - name: Upload Deep artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v3
       with:
         name: DeepC-MacOS-Nuke${{ matrix.nuke-version }}
         path: "DeepC-*.zip"

@@ -12,7 +12,7 @@ jobs:
         nuke-version: ["14.0v1"]
     steps:
     - name: Checkout branch
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Download Nuke
       run: |
           echo ${{ github.workspace }}
@@ -40,7 +40,7 @@ jobs:
     - name: Compress files
       run:  7z a "./DeepC-Windows-Nuke${{ matrix.nuke-version }}.zip" ./install/*
     - name: Upload Deep artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@3
       with:
         name: DeepC-Windows-Nuke${{ matrix.nuke-version }}
         path: "DeepC-*.zip"
